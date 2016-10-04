@@ -32,6 +32,7 @@
             start = function(event) {
                 var parent = this.parent(SVG.Nested) || this.parent(SVG.Doc);
                 event = event || window.event;
+                event.stopPropagation()
 
                 // Invoke any callbacks
                 if (element.beforedrag) {
@@ -153,7 +154,9 @@
                                 y = element.y();
                             }
                         } else if (typeof coord === "boolean" && coord) {
-                            element.move(x, y);
+                            if(constraint.hold == null || !constraint.hold) {
+                                element.move(x, y);
+                            }
                         } else {
                             x = element.x();
                             y = element.y();
@@ -172,7 +175,9 @@
                             y = constraint.maxY - height;
                         }
 
-                        element.move(x, y);
+                        if(constraint.hold == null || !constraint.hold) {
+                            element.move(x, y);
+                        }
                     }
 
                     // Calculate the total movement
